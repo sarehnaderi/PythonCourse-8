@@ -1,3 +1,4 @@
+
 products = []
 
 def read_data():
@@ -6,7 +7,7 @@ def read_data():
         product = line.split(",") 
         dic = {"id":product[0],"name":product[1],"price":product[2],"count":product[3]}
         products.append(dic)
-    print(products)
+    # print(products)
 def show_menu():
     print("*Menu*")
     print("1-add")
@@ -26,7 +27,18 @@ def add():
     products.append(dic) 
     print (products)
 def delete():
-    pass
+    product_id = int(input("Enter the ID of product that you want to delete: "))
+    for product in products:
+        if product_id == product['id']:
+            print("Are you sure you want to delete this item?", product)
+            allow = int(input("Enter 1 to confirm or 2 to start again: "))
+            if allow == 1:
+                products.remove(product)
+                print("You successfully deleted the item.")
+                break
+            elif allow == 2:
+                return
+           
 def search():
     key_word = input("Enter key word:")
     for product in products:
@@ -41,7 +53,6 @@ def edit():
     product_id = int(input("Enter the ID of product that you want to edit:"))
     for product in products:
         if product_id == product['id']:
-
             print("Which item do you want to edit?")
             print("1-Name")
             print("2-Price")
