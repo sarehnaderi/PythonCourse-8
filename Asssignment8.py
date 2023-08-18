@@ -7,7 +7,7 @@ def read_data():
         product = line.split(",") 
         dic = {"id":product[0],"name":product[1],"price":product[2],"count":product[3]}
         products.append(dic)
-    # print(products)
+    print(products)
 def show_menu():
     print("*Menu*")
     print("1-add")
@@ -27,17 +27,17 @@ def add():
     products.append(dic) 
     print (products)
 def delete():
-    product_id = int(input("Enter the ID of product that you want to delete: "))
+    product_id = input("Enter the ID of product that you want to delete: ")
     for product in products:
         if product_id == product['id']:
             print("Are you sure you want to delete this item?", product)
-            allow = int(input("Enter 1 to confirm or 2 to start again: "))
-            if allow == 1:
+            allow = input("Enter 1 to confirm or 2 to start again: ")
+            if allow == '1':
                 products.remove(product)
                 print("You successfully deleted the item.")
-                break
-            elif allow == 2:
-                return
+                print(products)
+            elif allow == '2':
+                show_menu()
            
 def search():
     key_word = input("Enter key word:")
@@ -48,29 +48,92 @@ def search():
     else: 
         print("Not found")
 def buy():
-    pass
+    while True:
+        print("Choose your required service(1-3):")
+        print("1-Add a new product to your buy list")
+        print("2-Recieve your receipt")
+        print("3-Show menu")
+        option = int(input("Enter your choice:"))
+        # انتخاب کالا
+        if option == 1:
+            product_id = input("Enter product ID::")
+            for product in products:
+                    if product_id == product['id']:
+                        wanted_count = int(input("Enter the count of the product that you need:"))
+                        pro_count = int(product['count'])
+                        if wanted_count <= pro_count:
+                            remain = pro_count - wanted_count
+                            print("Your item(s) added to your buy list.")
+                            print("Remaining count:",remain)
+                            print("id \t name \t price")
+                            print(product['id'],'\t',product['name'],'\t',product['price'])
+                      
+                        else:
+                            print("Sorry! There is not enough of this item available.")
+                            print("Available count of your required item is:",product['count'])
+                        break
+                    else:
+                        print("The ID is not defined.")
+                        break
+        # دریافت رسید
+        elif option == 2:
+            receipt = []
+            dic = {'id':product['id'],'name':product['name'],'price':product['price']}
+            receipt.append(dic)
+            print("id \t name \t price")
+            for p in receipt:
+                print(p['id'],'\t',p['name'],'\t',p['price'])
+        
+        elif option == 3:
+            show_menu()
+            user_choice = int(input("Enter your choise:"))
+            if user_choice == 1:
+                add()
+            elif user_choice == 2:
+                delete()
+            elif user_choice == 3:
+                search()
+            elif user_choice == 4:
+                buy()
+            elif user_choice == 5:
+                edit()
+            elif user_choice == 6:
+                exit()
+            elif user_choice == 7:
+                show_products()
+            else:
+                print("Error! Enter a valid number(1-7).")
+            break
+        
+           
+
 def edit():
-    product_id = int(input("Enter the ID of product that you want to edit:"))
+    product_id = input("Enter the ID of product that you want to edit:")
     for product in products:
         if product_id == product['id']:
+            print(product)
             print("Which item do you want to edit?")
             print("1-Name")
             print("2-Price")
             print("3-Count")
-            choice = int(input("Enter the number:"))
-            if choice == 1:
+            choice = input("Enter the number:")
+            if choice == '1':
                 edit_name = input("Enter new name:")
                 product['name'] = edit_name
                 print("Your list is updated")
-            elif choice == 2:
-                edit_price = int(input("Enter updated price:"))
+                print("Your updated product info:",product)
+            elif choice == '2':
+                edit_price = input("Enter updated price:")
+                print("*")
                 product['price'] = edit_price
-            elif choice == 3:
-                edit_count = int(input("Enter updated count:"))
+                print("Your updated product info:",product)
+            elif choice == '3':
+                edit_count = input("Enter updated count:")
                 product['count'] = edit_count
+                print("Done! Your updated product info:",product)
             else:
-                print("Error! Enter a valid number.")
-            print(products)
+                print("Error! Enter a valid number(1-3).")
+                print(products)
                 
             
 def exit():
@@ -80,6 +143,7 @@ def show_products():
     print("id \t name \t price \t count")
     for product in products:
         print(product['id'],'\t',product['name'],'\t',product['price'],'\t',product['count'])
+       
 read_data()
 show_menu()
 
@@ -97,5 +161,7 @@ elif user_choice == 5:
     edit()
 elif user_choice == 6:
     exit()
-else:
+elif user_choice == 7:
     show_products()
+else:
+    print("Error! Enter a valid number(1-7).")
